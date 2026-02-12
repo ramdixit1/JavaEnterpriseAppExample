@@ -1,0 +1,81 @@
+<!-- Parent Maven file that manages dependency versions and shared plugins for all backend microservices. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.bank</groupId>
+    <artifactId>banking-platform</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>banking-platform</name>
+    <description>Parent project for on-prem banking microservices.</description>
+
+    <modules>
+        <module>common-lib</module>
+        <module>account-service</module>
+        <module>transaction-service</module>
+        <module>gateway-service</module>
+    </modules>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.version>3.3.2</spring.boot.version>
+        <spring.cloud.version>2023.0.2</spring.cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot BOM keeps all Spring dependency versions aligned. -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Spring Cloud BOM keeps cloud dependencies compatible with Spring Boot version. -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Shared compiler configuration for all backend modules. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!--
+      JFrog Artifactory integration:
+      Replace placeholders with your on-prem Artifactory URLs/repositories.
+      Credentials should be stored in ~/.m2/settings.xml server blocks, not in source control.
+    -->
+    <distributionManagement>
+        <repository>
+            <id>artifactory-releases</id>
+            <url>https://your-artifactory.example.com/artifactory/maven-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>artifactory-snapshots</id>
+            <url>https://your-artifactory.example.com/artifactory/maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

@@ -1,0 +1,10 @@
+# Java artifacts
+**/target/
+
+# Node artifacts
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.idea/
+.vscode/
